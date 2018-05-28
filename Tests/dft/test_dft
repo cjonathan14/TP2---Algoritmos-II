@@ -1,0 +1,80 @@
+#!/bin/bash
+
+folder="./Tests/dft"
+
+# Comparison test: Compare output with reference.
+
+
+# DFT vs FFT
+files="$folder"/time_input*.txt
+i=1
+for ifile in $files
+do
+	ofile1=${folder}/DFT_time_input${i}.txt
+	ofile2=${folder}/FFT_time_input${i}.txt
+	./fourier_transform.exe -i $ifile -o $ofile1 -m DFT
+	./fourier_transform.exe -i $ifile -o $ofile2 -m FFT
+	./Compare/compare_vector.exe $ofile1 $ofile2
+	compare=$?
+	if [ "$compare" != "0" ]
+	then
+		echo "Comparison test failed in DFT vs FFT"
+	fi
+	i=$((i + 1))
+done
+
+# IDFT vs IFFT
+files="$folder"/frecuency_input*.txt
+i=1
+for ifile in $files
+do
+	ofile1=${folder}/IDFT_frecuency_input${i}.txt
+	ofile2=${folder}/IFFT_frecuency_input${i}.txt
+	./fourier_transform.exe -i $ifile -o $ofile1 -m IDFT
+	./fourier_transform.exe -i $ifile -o $ofile2 -m IFFT
+	./Compare/compare_vector.exe $ofile1 $ofile2
+	compare=$?
+	if [ "$compare" != "0" ]
+	then
+		echo "Comparison test failed in IDFT vs IFFT"
+	fi
+	i=$((i + 1))
+done
+
+
+
+# Inverse test: Test if DFT and IDFT are inverses
+
+# Inverse of DFT
+files="$folder"/DFT_time_input*.txt
+i=1
+for ifile in $files
+do
+	ofile=${folder}/IDFT_DFT_time_input${i}.txt
+	rofile=${folder}/time_input${i}.txt
+	./fourier_transform.exe -i $ifile -o $ofile -m IDFT
+	./Compare/compare_vector.exe $ofile $rofile
+	compare=$?
+	if [ "$compare" != "0" ]
+	then
+		echo "Inverse test failed in DFT-IDFT"
+	fi
+	i=$((i + 1))
+done
+
+# inverse of FFT
+files="$folder"/FFT_time_input*.txt
+i=1
+for ifile in $files
+do
+	ofile=${folder}/IFFT_FFT_time_input${i}.txt
+	rofile=${folder}/time_input${i}.txt
+	./fourier_transform.exe -i $ifile -o $ofile -m IFFT
+	./Compare/compare_vector.exe $ofile $rofile
+	compare=$?
+	if [ "$compare" != "0" ]
+	then
+		echo "Inverse test failed in FFT_IFFT"
+	fi
+	i=$((i + 1))
+done

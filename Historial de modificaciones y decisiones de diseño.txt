@@ -1,0 +1,123 @@
+Fecha: 25/05
+
+Modificado el tratamiento de la linea vacia. Ahora read considera el caso particular de la linea vacia para no considerarla corrupta, ademas de comerse todos los espacios vacios al comienzo de la linea. (process_signal / read)
+Parece ser que ya no hay problemas con los espacios en la lectura. No olvidar mostrarselo a lucio al momento de entregar
+
+Creado modulo utils, para contener la funcion que comprueba si un numero es potencia de 2. Añadido modulo utils en process_signal.cc/h y ft.h, modificados ambos para utilizar la funcion is_pow_2(). Modifcado el makefile con las nuevas dependencias y la compilacion del nuevo modulo. Probado y funcionando correctamente. A la primera me tiraba fallo de segmentacion por una cuestion de precedencia de operadores (se estaba calculando mal is_pow_2()).
+
+Nueva jerarquia del strategy: Renombre las clases. Ahora son ft --- dft,fft --- direct_dft,inverse_dft,direct_fft,inverse_fft. Implemente ambas ramas, con buenos resultados (las calculos parecen dar bien).
+
+Modificada la funcion que setea el transformador. Ahora devuelve el transformador por valor y se llama create_transformer(). Modificada la funcion main para soportar el cambio. Modificado el .h para añadir el prototipo de create_transformer. (Archivos: main.cc y main.h)
+
+Modificada la macro que decia CERO (Español) a ZERO (ingles) (Archivos: process_signal.cc/h).
+
+Modificados comentarios en español, pasados a inglés (err.c linea 17, tempArray.h lineas 22 y 23). Si ven esto revisenlo, mi ingles de la calle podria fallar.
+
+Modificado makefile del programa random_vector. Añadido el modulo utils en la compilacion. Igual con el programa compare_vector. Modificado el makefile de la funcion que genera un binario para que tenga un clean.
+
+Modificado el makefile para no correr el test de regresion siempre. Simplifique el test de regresion para que no renombre el ejecutable.
+
+En este punto corri todas las pruebas y dieron OK. Voy a revisar el codigo por una ultima vez y dejarlo en un backup para entregar en la reentrega.
+
+Modificadas validaciones en el modulo ft.h. Faltaban las validaciones de salida no nula como parametro y entrada que no sea potencia de 2 en las funciones de la dft e fft en las clases mas bajas. Solo corri el test de regresion pero asumo que no rompi nada.
+
+Termine de revisar el codigo. Esta listo para entregarse. Falta el informe, pero voy a seguir con lo del tp2 para no atrasarnos (atrasarlos). Voy a guardar la version actual para la entrega y no la tocamos mas, modificamos una aparte, que va a ser el TP2. La voy a subir al drive.
+
+Fecha de finalizacion: 26/05, 15:30 hs
+
+
+
+
+
+
+Cosas por hacer TP1:
+
+Antes de entregar, agregar el test time tal cual estaba en la ultima entrega, en el drive yo lo borre todo por lo que ocupaba la ultima version. Esto queda para Lucas, yo no me acuerdo como era.
+
+Modificar el informe: Aclarar que ya no se corre el test de regresion al compilar. (Esto lo hago yo, Jony, otro dia)
+
+(opcional) Hacer un diagrama UML del strategy. Ahora es un poco mas complejo y el diagrama va a ayudar a entenderlo mejor.
+
+
+
+
+El programa parece estar funcionando, en este punto, tal cual lo pide el tp. Revise todas las especificacion pedidas en el informe respecto al programa en si (no va mas alla de las regresiones) y creo que las cumple todas, y funciona tal cual lo pedido. Si tienen tiempo revisenlas, es lo mas importante. Prueben casos limite, intenten romperlo. Salvo por eso, ya es una version casi definitiva, dado que el resto del tp no modifica el programa.
+
+
+
+Historial de modificaciones:
+
+TP2:
+
+Fecha: 26/05 17:22 hs
+
+Añadi los nuevos argumentos en la estructura de argumentos (main.c)
+
+Añadi al main las nuevas funciones de parseo (main.c)
+
+Añadida macro con error por defecto (main.h)
+
+No toque el modulo cmdline (no es necesario para añadir nuevas opciones).
+
+Modificado err.h/cc para contemplar un ERROR_REGRESSION_FILE (este error se usa en main.cc, en el parseo del archivo de regresion)
+
+Terminada la modificacion de la validacion de argumentos. 
+
+Modificada la funcion main. Se amplió la interfaz de la funcion process_signal para añadir el flujo y todo lo necesario para calcular la regresion. Se me hace que la interfaz quedo muy grande, podria usarse una estructura de configuracion.
+
+Se modifico la funcion process_signal tal cual lo pensado. Ahora recibe 6 argumentos, se añadio el flujo de regresion y un booleano para saber si hace la regresion o no, ademas del error en la comparacion. Segun sea true o false (el booleano) la funcion se comporta en forma distinta. Si es false hace lo mismo que antes. Si es true, en vez de imprimir, lee una linea del flujo de regresion, compara e imprime el resultado. Cada una de esas operaciones tiene una funcion asociada. Para leer se usa la vieja read, y cuando hay un error en la lectura se omite la linea y se toman distintas. Para comparar se usa una funcion compare, que recibe los 2 vectores, el error que queres utilizar en la comparacion, un booleano para decidir si son iguales o no y una variable que te da el error del calculo (es un prototipo largo, pero no queda otra). La funcion de impresion de resultado recibe un booleano con el resultado de la comparacion, el tamaño de la salida, y el error de la comparación, ademas del flujo de salida.
+Las otras funciones del modulo no se tocaron. (process_signal.cc/h).
+
+Se hicieron todas las validaciones pertinentes para el correcto funcionamiento en los casos limites (lineas vacias al final, etc) y el tratamiento de errores.
+
+Se modifico el Complex para añadir un operador que calcula el modulo
+
+Se modifico el Array para añadir operadores que calculan: la diferencia y la norma. El metodo que calcula la diferencia devuelve un vector con tantos elementos como elementos tenga el objeto que lo utiliza (el de la izquierda en la operacion)
+
+Se modifico la funcion compare para que coincida con el criterio de comparacion del trabajo practico. Se hizo desde 0. Se basa en los metodos implementados en el array.
+
+
+
+
+
+Decisiones de diseño:
+
+Para simplificar el codigo, no se considera un error si se invoca al programa con argumento -e y sin -r, ni ninguna combinacion que no tenga sentido. El programa no calcula una regresion en este caso (esto hay que documentarlo), solo lo hace cuando le pasas -r (asi lo pide el enunciado). Creo haber considerado todos los casos y resulta robusto. En resumen, el programa ignora los argumentos al pedo.
+
+
+La idea es que la funcion process_signal cambie de comportamiento segun tenga que hacer la regresion o no (es decir, si regression es true o false). Esta es la mejor forma de no duplicar codigo, y me resulta correcta a nivel logico (comparar señales tambien es procesar una señal). Entonces el mayor cambio va a estar en la funcion process_signal. Esta va a llamar a las funciones correspondientes (compare, imprimir resultado del test), pero carga con todo el trabajo, en ambos modos de funcionamiento. (si no se entendio nada mirar funcion)
+
+Se decidio que, en caso de tener un error en el archivo de regresion (falla la lectura) o el archivo tenga tamaño distinto, el programa lo considera distinto y sigue con la siguiente linea. Cuando el archivo de entrada tiene una linea corrupta, se omite simultaneamente una linea del archivo de regresion
+
+El enunciado tiene una inconsistencia: dice que se imprima el resultado de la regresion por stdout y despues muestra un ejemplo donde se imprime en el archivo de salida (el que se pasa en el argumento -o). Se toma la segunda opción por ser más general.
+
+Al archivo de regresion tambien se le añaden 0's cuando su tamaño no es potencia de 2
+
+Cuando se ejecuta una regresion, se compara tantos vectores como haya en el archivo de entrada. Es decir, si el archivo de regresion es mas grande, se ignora el resto de los vectores.
+
+El programa va a retornar 0 solo cuando todas las comparaciones hayan dado bien y no haya habido ningun problema, ningun error.
+
+
+Formato de entrada, salida y regresion:
+El programa no tiene salida para una linea vacia. En otro caso imprime la linea y un '\n' (esto es viejo pero es bueno recordarlo)
+
+Si el archivo de regresion tiene menos lineas que el archivo de entrada, se paran las comparaciones y se termina el programa con error. 
+
+Si el archivo de regresion tiene mas lineas que el archivo de entrada, no pasa nada, se usan solo las necesarias.
+
+No se admiten lineas vacias intermedias (es una paja programar tantas validaciones), es decir, no importa el comportamiento del programa en ese caso. Si se admiten al final, donde se ignoran, pasando a la siguiente sin omitir lineas del archivo de regresiones. No se omiten lineas vacias en el archivo de regresión.
+
+Funcion compare:
+Si ambos son de distinto tamaño, devuelve que son distintos y el error es -1 (pues esta indefinido). Otro caso de error indefinido es un vector de regresion nulo.
+
+El programa en general tiene ese comportamiento: si el error esta indefinido o no es posible calcularse (un vector esta corrupto), devuelve -1 como error.
+
+Metodo diferencia (TDA Array): El metodo que calcula la diferencia devuelve un vector con tantos elementos como elementos tenga el objeto que lo utiliza (el de la izquierda en la operacion). El metodo que calcula la norma lo hace a partir de un metodo abs() definido para la clase T abstracta.
+
+
+
+
+
+Cosas por hacer TP2:
+Pensar si es necesario una estructura de configuracion para disminuir un poco la interfaz de la funcion process_signal
+Modificar las pruebas automaticas para que usen el nuevo modo del programa

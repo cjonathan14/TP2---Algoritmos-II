@@ -1,0 +1,54 @@
+#!/bin/bash
+
+folder="./Tests/invalid_input"
+
+# Corrupted input test
+
+ifile="$folder"/corrupted_input.txt
+ofile1="$folder"/DFT_corrupted_input.txt
+ofile2="$folder"/IDFT_corrupted_input.txt
+ofile3="$folder"/FFT_corrupted_input.txt
+ofile4="$folder"/IFFT_corrupted_input.txt
+errfile="$folder"/test_err_log.txt
+
+echo "Errors running corrupted input DFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile1 -m DFT 2>> $errfile
+date >> $errfile
+
+echo "Errors running corrupted input IDFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile2 -m IDFT 2>> $errfile
+date >> $errfile
+
+echo "Errors running corrupted input FFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile3 -m FFT 2>> $errfile
+date >> $errfile
+
+echo "Errors running corrupted input IFFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile4 -m IFFT 2>> $errfile
+date >> $errfile
+
+# Binary file test
+
+ifile="$folder"/binary
+ofile1="$folder"/DFT_binary.txt
+ofile2="$folder"/IDFT_binary.txt
+ofile3="$folder"/FFT_binary.txt
+ofile4="$folder"/IFFT_binary.txt
+size=1000  # Size of binary files (bytes)
+"$folder"/binary_file/rand_binary.exe $ifile $size
+
+echo "Errors running binary input DFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile1 -m DFT 2>> $errfile
+date >> $errfile
+
+echo "Errors running binary input IDFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile2 -m IDFT 2>> $errfile
+date >> $errfile
+
+echo "Errors running binary input FFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile3 -m FFT 2>> $errfile
+date >> $errfile
+
+echo "Errors running binary input IFFT, stdout" >> $errfile
+./fourier_transform.exe -i $ifile -o $ofile4 -m IFFT 2>> $errfile
+date >> $errfile

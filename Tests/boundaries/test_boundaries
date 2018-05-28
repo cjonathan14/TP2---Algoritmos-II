@@ -1,0 +1,57 @@
+#!/bin/bash
+
+folder="./Tests/boundaries"
+
+# Empty file test
+
+ifile="$folder"/empty.txt
+ofile1="$folder"/empty_DFT.txt
+ofile2="$folder"/empty_IDFT.txt
+ofile3="$folder"/empty_FFT.txt
+ofile4="$folder"/empty_IFFT.txt
+./fourier_transform.exe -i $ifile -o $ofile1 -m DFT
+status=$?
+if [ "$status" != "0" ]
+then
+	echo "Empty file test failed: Program returned error in DFT"
+fi
+./fourier_transform.exe -i $ifile -o $ofile2 -m IDFT
+status=$?
+if [ "$status" != "0" ]
+then
+	echo "Empty file test failed: Program returned error in IDFT"
+fi
+./fourier_transform.exe -i $ifile -o $ofile3 -m FFT
+status=$?
+if [ "$status" != "0" ]
+then
+	echo "Empty file test failed: Program returned error in DFT"
+fi
+./fourier_transform.exe -i $ifile -o $ofile4 -m IFFT
+status=$?
+if [ "$status" != "0" ]
+then
+	echo "Empty file test failed: Program returned error in IDFT"
+fi
+
+# Stress test. Only for fft and ifft
+
+size=1000000
+ifile="$folder"/stress_input.txt
+ofile1="$folder"/stress_FFT.txt
+ofile2="$folder"/stress_IFFT.txt
+
+./Random_vector/random_vector.exe $size $ifile
+
+./fourier_transform.exe -i $ifile -o $ofile1 -m FFT
+status=$?
+if [ "$status" != "0" ]
+then
+	echo "Stress test failed: Program returned error in FFT"
+fi
+./fourier_transform.exe -i $ifile -o $ofile2 -m IFFT
+status=$?
+if [ "$status" != "0" ]
+then
+	echo "Stress test failed: Program returned error in IFFT"
+fi

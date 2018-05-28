@@ -1,0 +1,62 @@
+#!/bin/bash
+
+folder="./Tests/regression"
+
+# DFT regression test
+
+ifile=""$folder"/time_input.txt"
+ofile1=""$folder"/time_output_DFT_old.txt"
+ofile2=""$folder"/time_output_DFT.txt"
+./old_fourier_transform.exe -i $ifile -o $ofile1 -m DFT
+./fourier_transform.exe -i $ifile -o $ofile2 -m DFT
+cmp $ofile1 $ofile2 -s
+compare=$?
+if [ "$compare" != "0" ]
+then
+	echo "Program has changed, regression test failed in DFT"
+fi
+
+# IDFT regression test
+
+ifile=""$folder"/frecuency_input.txt"
+ofile1=""$folder"/frecuency_output_IDFT_old.txt"
+ofile2=""$folder"/frecuency_output_IDFT.txt"
+
+./old_fourier_transform.exe -i $ifile -o $ofile1 -m IDFT
+./fourier_transform.exe -i $ifile -o $ofile2 -m IDFT
+cmp $ofile1 $ofile2 -s
+compare=$?
+if [ "$compare" != "0" ]
+then
+	echo "Program has changed, regression test failed in IDFT"
+fi
+
+# FFT regression test
+
+ifile=""$folder"/time_input.txt"
+ofile1=""$folder"/time_output_FFT_old.txt"
+ofile2=""$folder"/time_output_FFT.txt"
+
+./old_fourier_transform.exe -i $ifile -o $ofile1 -m FFT
+./fourier_transform.exe -i $ifile -o $ofile2 -m FFT
+cmp $ofile1 $ofile2 -s
+compare=$?
+if [ "$compare" != "0" ]
+then
+	echo "Program has changed, regression test failed in FFT"
+fi
+
+# IFFT regression test
+
+ifile=""$folder"/frecuency_input.txt"
+ofile1=""$folder"/frecuency_output_IFFT_old.txt"
+ofile2=""$folder"/frecuency_output_IFFT.txt"
+
+./old_fourier_transform.exe -i $ifile -o $ofile1 -m IFFT
+./fourier_transform.exe -i $ifile -o $ofile2 -m IFFT
+cmp $ofile1 $ofile2 -s
+compare=$?
+if [ "$compare" != "0" ]
+then
+	echo "Program has changed, regression test failed in IFFT"
+fi
