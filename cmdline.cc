@@ -10,7 +10,7 @@
 
 using namespace std;
 
-cmdline::cmdline() {}
+cmdline::cmdline() { option_table = NULL; }
 
 cmdline::cmdline(option_t *table) : option_table(table){}
 
