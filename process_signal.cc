@@ -6,6 +6,7 @@
 #include <fstream>
 #include <limits>
 #include <cstdlib>
+#include <string>
 #include <math.h>
 #include "TempArray.h"
 #include "err.h"
