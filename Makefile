@@ -1,7 +1,14 @@
 #   MAKEFILE
 
-CXXARGS  = -g -Wall -pedantic -ansi
-CXXFLAGS = -I. $(CXXARGS)
+ifeq ($(TARGET),clang)
+	CXX := clang++
+	CXXARGS  = -g -Wall -pedantic
+	CXXFLAGS = -I. $(CXXARGS)
+else
+	CXX := g++
+	CXXARGS  = -g -Wall -pedantic -ansi
+	CXXFLAGS = -I. $(CXXARGS)
+endif
 
 all: rename fourier_transform.exe
 	
