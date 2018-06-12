@@ -188,7 +188,7 @@ int main(int argc, char * const argv[])
 	ifs.close();
 	regr_ifs.close();
 	ofs.close();
-	if (ofs.fail() && *oss != cout) {
+	if (ofs.fail() && oss != &cout) {
 		st = ERROR_OUTPUT_FILE;
 		handle_err(st);
 		return st;
