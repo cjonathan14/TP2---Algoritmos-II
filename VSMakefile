@@ -1,0 +1,24 @@
+#   MAKEFILE WINDOWS
+
+CXXARGS  = -Wall
+CXXFLAGS = -I. $(CXXARGS)
+
+all: fourier_transform.exe
+	
+fourier_transform.exe: main.obj cmdline.obj process_signal.obj  Complex.obj err.obj utils.obj
+	$(CXX) $(CXXFLAGS) -o fourier_transform.exe cmdline.obj main.obj process_signal.obj Complex.obj err.obj utils.obj
+main.($(OBJ_POSFIX)): main.cc main.h types.h process_signal.h err.h cmdline.h ft.h
+	$(CXX) $(CXXFLAGS) -c main.cc
+cmdline.obj: cmdline.cc cmdline.h err.h
+	$(CXX) $(CXXFLAGS) -c cmdline.cc
+process_signal.obj: process_signal.cc process_signal.h  TempArray.h err.h types.h Complex.h ft.h utils.h
+	$(CXX) $(CXXFLAGS) -c process_signal.cc
+Complex.obj: Complex.cc Complex.h 
+	$(CXX) $(CXXFLAGS) -c Complex.cc
+err.obj: err.cc err.h 
+	$(CXX) $(CXXFLAGS) -c err.cc 
+utils.obj: utils.cc utils.h
+	$(CXX) $(CXXFLAGS) -c utils.cc
+
+clean:
+	$(RM) -vf *.obj *.exe *.t *.out *.err 
